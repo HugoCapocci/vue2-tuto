@@ -9,9 +9,14 @@
 
       <div class="product-info">
         <h1>{{ product }}</h1>
+        <p v-if="inventory >= 10">In Stock</p>
+        <p v-else-if="inventory > 0 && inventory < 10">Almost sold out...</p>
+        <p v-else>Out of Stock!</p>
       </div>
 
-    </div>  
+    </div>
+    <label for="inventory">Inventory</label>
+    <input id="inventory" type="number" v-model="inventory" /> 
   </div>
 </template>
 
@@ -22,6 +27,7 @@ export default {
   data() {
     return {
       product: 'Socks',
+      inventory: 50,
       image: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
       altText: 'A pair of stocks'
     };
