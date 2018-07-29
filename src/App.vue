@@ -18,13 +18,20 @@
           </li>
         </ul>
         <div v-for="variant in variants" :key="variant.variantId">
-          <p>{{ variant.variantColor }}</p>
+          <p @mouseover="changeColor(variant.variantColor)">{{ variant.variantColor }}</p>
+        </div>
+
+        <div class="spaced">
+          <button @click="addToCart">Add to cart</button>
+          <button @click="removeFromCart" :disabled="cart <= 0">Remove from cart</button>
+        </div>
+
+        <div class="cart">
+          <p>Cart({{ cart }})</p>
         </div>
       </div>
 
     </div>
-    <label for="inventory">Inventory</label>
-    <input id="inventory" type="number" v-model="inventory" /> 
   </div>
 </template>
 
@@ -36,6 +43,10 @@ export default {
     return {
       product: 'Socks',
       inventory: 50,
+      models: {
+        green: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
+        blue: 'https://www.dropbox.com/s/t32hpz32y7snfna/vmSocks-blue-onWhite.jpg?dl=0'
+      },
       image: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
       altText: 'A pair of stocks',
       details: ['80% cotton', '20% polyester', 'Gender-neutral'],
@@ -49,7 +60,20 @@ export default {
           variantColor: 'blue'
         }
       ],
+      cart: 0,
     };
+  },
+  methods: {
+    addToCart() {
+      this.cart += 1;
+    },
+    removeFromCart() {
+      this.cart -= 1
+    },
+    changeColor(color) {
+      console.log('color changed: ', color);
+      this.image = this.models[color];
+    },
   }
 }
 </script>
@@ -80,6 +104,13 @@ img {
 
 .product-image {
   flex-basis: 700px;
+}
+
+.spaced {
+  display: flex;
+}
+.spaced > button{
+  margin-right: 2px;
 }
 
 .product-info {
