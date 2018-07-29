@@ -9,21 +9,26 @@
 
       <div class="product-info">
         <h1>{{ product }}</h1>
-        <p v-if="inventory >= 10">In Stock</p>
-        <p v-else-if="inventory > 0 && inventory < 10">Almost sold out...</p>
+        <p v-if="inStock >= 10">In Stock</p>
         <p v-else>Out of Stock!</p>
         <ul>
           <li v-for="(detail, index) in details" :key="index">
             {{ detail }}
           </li>
         </ul>
-        <div v-for="variant in variants" :key="variant.variantId">
-          <p @mouseover="changeColor(variant.variantColor)">{{ variant.variantColor }}</p>
+        <div
+          class="color-box"
+          v-for="variant in variants"
+          :key="variant.variantId"
+          :style="{ color: variant.variantColor}"
+          @mouseover="changeColor(variant.variantColor)"
+        >
+          <p>{{ variant.variantColor }}</p>
         </div>
 
         <div class="spaced">
-          <button @click="addToCart">Add to cart</button>
-          <button @click="removeFromCart" :disabled="cart <= 0">Remove from cart</button>
+          <button @click="addToCart":disabled="!inStock" :class="{ disabledButton: !inStock }">Add to cart</button>
+          <button @click="removeFromCart" :disabled="cart <= 0" :class="{ disabledButton: cart <= 0 }">Remove from cart</button>
         </div>
 
         <div class="cart">
@@ -42,7 +47,7 @@ export default {
   data() {
     return {
       product: 'Socks',
-      inventory: 50,
+      inStock: true,
       models: {
         green: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
         blue: 'https://www.dropbox.com/s/t32hpz32y7snfna/vmSocks-blue-onWhite.jpg?dl=0'
