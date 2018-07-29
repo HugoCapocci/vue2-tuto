@@ -8,8 +8,8 @@
       </div>
 
       <div class="product-info">
-        <h1>{{ product }}</h1>
-        <p v-if="inStock >= 10">In Stock</p>
+        <h1>{{ title }}</h1>
+        <p v-if="inStock">In Stock</p>
         <p v-else>Out of Stock!</p>
         <ul>
           <li v-for="(detail, index) in details" :key="index">
@@ -18,10 +18,10 @@
         </ul>
         <div
           class="color-box"
-          v-for="variant in variants"
+          v-for="(variant, index) in variants"
           :key="variant.variantId"
           :style="{ color: variant.variantColor}"
-          @mouseover="changeColor(variant.variantColor)"
+          @mouseover="changeProduct(index)"
         >
           <p>{{ variant.variantColor }}</p>
         </div>
@@ -47,22 +47,25 @@ export default {
   data() {
     return {
       product: 'Socks',
-      inStock: true,
+      brand: 'Bobby Socks Inc.',
       models: {
         green: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
-        blue: 'https://www.dropbox.com/s/t32hpz32y7snfna/vmSocks-blue-onWhite.jpg?dl=0'
+        blue: 'https://dl.dropbox.com/s/t32hpz32y7snfna/vmSocks-blue-onWhite.jpg?dl=0'
       },
       image: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
       altText: 'A pair of stocks',
       details: ['80% cotton', '20% polyester', 'Gender-neutral'],
+      selectedVariant: 0,
       variants: [
         {
           variantId: 2234,
-          variantColor: 'green'    
+          variantColor: 'green',
+          quantity: 10, 
         },
         {
           variantId: 2235,
-          variantColor: 'blue'
+          variantColor: 'blue',
+          quantity: 0,
         }
       ],
       cart: 0,
@@ -75,10 +78,21 @@ export default {
     removeFromCart() {
       this.cart -= 1
     },
-    changeColor(color) {
-      console.log('color changed: ', color);
-      this.image = this.models[color];
+    changeProduct(index) {
+      this.selectedVariant = index;
     },
+  },
+  computed: {
+    title() {
+      return `${this.brand} ${this.product}`;
+    },
+    image() {
+      const color = this.variants[index].variantColor;
+      return this.models[color];
+    },
+    inStock() {
+      return this.variants[this.selectedVariant].quantity > 0;
+    }
   }
 }
 </script>
