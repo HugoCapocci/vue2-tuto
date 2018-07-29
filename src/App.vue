@@ -12,6 +12,14 @@
         <p v-if="inventory >= 10">In Stock</p>
         <p v-else-if="inventory > 0 && inventory < 10">Almost sold out...</p>
         <p v-else>Out of Stock!</p>
+        <ul>
+          <li v-for="(detail, index) in details" :key="index">
+            {{ detail }}
+          </li>
+        </ul>
+        <div v-for="variant in variants" :key="variant.variantId">
+          <p>{{ variant.variantColor }}</p>
+        </div>
       </div>
 
     </div>
@@ -29,7 +37,18 @@ export default {
       product: 'Socks',
       inventory: 50,
       image: 'https://dl.dropboxusercontent.com/s/9zccs3f0pimj0wj/vmSocks-green-onWhite.jpg?dl=0',
-      altText: 'A pair of stocks'
+      altText: 'A pair of stocks',
+      details: ['80% cotton', '20% polyester', 'Gender-neutral'],
+      variants: [
+        {
+          variantId: 2234,
+          variantColor: 'green'    
+        },
+        {
+          variantId: 2235,
+          variantColor: 'blue'
+        }
+      ],
     };
   }
 }
